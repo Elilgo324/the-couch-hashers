@@ -4,7 +4,7 @@ from environment import Contributor, Project
 from genetics import Gene
 
 
-class Environment:
+class Master:
     def __init__(self, contributors: List[Contributor], projects: List[Project]):
         self.contributors = contributors
         self.projects = projects

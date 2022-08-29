@@ -1,11 +1,15 @@
 from typing import List, Dict
 
 import networkx as nx
+
+import sorting
 from environment import Contributor, Project
 
 
 class Gene:
     def __init__(self, contributors, projects, max_days):
+        self.contributors = contributors
+        self.projects = projects
         self.max_days = max_days
 
         # starting days for each project
@@ -15,14 +19,15 @@ class Gene:
         self.projects_per_contributors = {contributor.name: [] for contributor in contributors}
         self.contributors_per_projects = {project.name: [] for project in projects}
 
-    def greedy_init(self, sorted_projects: List[Project], contributors: List[Contributor]) -> None:
-        contributors_availability_day = {contributor.name: 0 for contributor in contributors}
+    def greedy_init(self) -> None:
+        sorting.sort_projects_by_purple_score(self.projects)
+        contributors_availability_day = {contributor.name: 0 for contributor in self.contributors}
 
-        for project in sorted_projects:
+        for project in self.projects:
             for day in range(self.max_days):
-                available_contributors = [contributor for contributor in contributors
+                available_contributors = [contributor for contributor in self.contributors
                                           if contributors_availability_day[contributor.name] >= day]
-                sorted_contributors = project.get_greedy_contributors_assignment(available_contributors)
+                project.find_most_fit_contributor(available_contributors, )
 
                 # update assignment
                 for contributor in sorted_contributors:
