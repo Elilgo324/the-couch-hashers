@@ -18,5 +18,6 @@ class Project:
         self.deadline = project_deadline
         self.required_rolls = required_rolls
 
-    def get_greedy_contributors_assignment(self) -> List[Contributor]:
+    def get_greedy_contributors_assignment(self, available_contributors) -> List[Contributor]:
         pass
+
