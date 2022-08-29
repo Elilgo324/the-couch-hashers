@@ -27,15 +27,17 @@ class Gene:
             for day in range(self.max_days):
                 available_contributors = [contributor for contributor in self.contributors
                                           if contributors_availability_day[contributor.name] >= day]
-                project.find_most_fit_contributor(available_contributors, )
 
-                # update assignment
-                for contributor in sorted_contributors:
-                    self.projects_per_contributors[contributor.name] = project.name
-                    self.contributors_per_projects[project.name] = contributor
-                    self.start_day[project.name] = day
-                    contributors_availability_day[contributor.name] += project.length
-                    break
+                for require_roll in project.required_rolls:
+                    project.find_most_fit_contributor(available_contributors, require_roll)
+                    # update assignment
+                    for contributor in available_contributors:
+                        self.projects_per_contributors[contributor.name] = project.name
+                        self.contributors_per_projects[project.name] = contributor
+                        self.start_day[project.name] = day
+                        contributors_availability_day[contributor.name] += project.length
+                        available_contributors.remove(contributor)
+                        break
 
     def _is_assignment_legit(self, project: Project, contributors: List[Contributor]):
         graph = nx.Graph()
