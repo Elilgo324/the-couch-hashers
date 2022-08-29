@@ -1,6 +1,7 @@
 
 from environment import Contributor, Project
 from genetics import Gene
+from master import Master
 
 
 def parse():
@@ -31,6 +32,5 @@ def parse():
 
 
 if __name__ == '__main__':
-
-    gene = Gene(contributors, projects)
-    gene.greedy_init(projects, contributors)
+    contributors, projects = parse()
+    master = Master(contributors, projects)

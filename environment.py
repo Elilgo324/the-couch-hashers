@@ -37,7 +37,3 @@ class Project:
     def score_on_day(self, day_start: int):
         return max(0, self.score - max(0, day_start + self.length - self.deadline))
 
-
-    def get_greedy_contributors_assignment(self, available_contributors) -> List[Contributor]:
-        pass
-
