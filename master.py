@@ -11,10 +11,15 @@ class Master:
         self.contributors = contributors
         self.projects = projects
         self.max_days = max(project.latest for project in self.projects)
-        self.genes = [Gene(contributors, projects, self.max_days) for _ in range(1)]
+        self.genes = [Gene(contributors, projects, self.max_days) for _ in range(5)]
         for gene in self.genes:
             gene.greedy_init()
         self.fitnesses = [gene.fitness() for gene in self.genes]
+
+    def mutate(self):
+        idx1, idx2 = np.random.randint(0, len(self.genes), 2)
+        gene1, gene2 = self.genes[idx1], self.genes[idx2]
+        gene1.
 
     def advance_generation(self):
         pass

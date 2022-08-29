@@ -1,6 +1,4 @@
-
 from environment import Contributor, Project
-from genetics import Gene
 from master import Master
 
 
