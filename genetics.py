@@ -19,7 +19,7 @@ class Gene:
         contributors_availability_day = {contributor.name: 0 for contributor in contributors}
 
         for project in sorted_projects:
-            for day in range(max_days):
+            for day in range(self.max_days):
                 available_contributors = [contributor for contributor in contributors
                                           if contributors_availability_day[contributor.name] >= day]
                 sorted_contributors = project.get_greedy_contributors_assignment(available_contributors)
