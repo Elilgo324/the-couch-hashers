@@ -1,12 +1,13 @@
 from typing import List, Dict
 
-from main import max_days
 import networkx as nx
 from environment import Contributor, Project
 
 
 class Gene:
-    def __init__(self, contributors, projects):
+    def __init__(self, contributors, projects, max_days):
+        self.max_days = max_days
+
         # starting days for each project
         self.start_day = {project.name: -1 for project in projects}
 
@@ -40,9 +41,9 @@ class Gene:
         return nx.matching.maximal_matching(graph) == len(project.required_rolls)
 
     def _is_date_legit(self):
-        for contributor in self.working_on:
+        for contributor in self.projects_per_contributors:
             last_day = -1
-            for project in self.working_on[contributor]:
+            for project in self.projects_per_contributors[contributor]:
                 if self.start_day[project] <= last_day:
                     return False
                 last_day = self.start_day[project] + project.length
@@ -51,7 +52,7 @@ class Gene:
     def fitness(self):
         score = 0
         for project in self.start_day:
-            if self._is_assignment_legit(project, self.working_on[project]):
+            if self._is_assignment_legit(project, self.contributors_per_projects[project]):
                 score += project.score_on_day(self.start_day[project])
         return score
 
@@ -60,8 +61,3 @@ class Gene:
         print(self.start_day)
         print('contributors assignment per each project:')
         print(self.contributors_per_projects)
-
-
-
-    def greedy_init(self, sorted_projects: Dict) -> None:
-        self.gene_mat = [[]]

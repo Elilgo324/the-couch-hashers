@@ -1,15 +1,6 @@
-# This is a sample Python script.
-
-# Press ⌃R to execute it or replace it with your code.
-# Press Double ⇧ to search everywhere for classes, files, tool windows, actions, and settings.
-from typing import List
 
 from environment import Contributor, Project
 from genetics import Gene
-
-projects = []
-contributors = []
-max_days = 0
 
 
 def parse():
@@ -39,12 +30,7 @@ def parse():
     return contributors, projects
 
 
-
 if __name__ == '__main__':
-    parse()
-
-    global max_days
-    max_days = max([project.deadline + project.score for project in projects])
 
     gene = Gene(contributors, projects)
     gene.greedy_init(projects, contributors)
