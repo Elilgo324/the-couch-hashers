@@ -6,40 +6,6 @@ from typing import List, Dict
 from environment import Contributor, Project
 
 
-class Contributor:
-    def __init__(self, name: str, skillz: Dict[str, int]):
-        self.name = name
-        self.skillz = skillz
-
-    def __repr__(self):
-        return f'Contributor(name={self.name}, skills={self.skillz})'
-
-
-class Project:
-    def __init__(self, project_name: str, project_length: int, project_score: int, project_deadline: int,
-                 rolls: Dict[str, int]):
-        self.name = project_name
-        self.length = project_length
-        self.score = project_score
-        self.deadline = project_deadline
-        self.rolls = rolls
-        self.latest = self.deadline + self.score - 1
-        self.purple_score = self.score / self.length
-
-    def __repr__(self):
-        return f'Project(name={self.name}, length={self.length}, score={self.score}, deadline={self.deadline},' \
-              f'rolls={self.rolls})'
-
-
-def sort_projects_by_purple_score(projects: List[Project]):
-    projects.sort(key=lambda p: p.purple_score)
-
-
-def find_most_fit_contributor(contributors: List[Contributor], project: Project):
-    for skill in project.rolls:
-        contributors.sort(key=lambda c: max(c.skillz[skill] - project.rolls[skill], 0))
-
-
 def parse():
     num_contributors, num_projects = (int(x) for x in input().split(' '))
     contributors = []
