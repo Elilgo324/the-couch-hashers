@@ -5,23 +5,6 @@
 from typing import List
 
 
-class Contributor:
-    def __init__(self, name: str, skillz_names: List[str], skillz_levels: List[int]):
-        self.name = name
-        self.skillz = skillz_names
-        self.skillz_levels = skillz_levels
-
-class Project:
-    def __init__(self, project_name, project_length, project_score, project_deadline, roll_names, roll_levels):
-        self.name = project_name
-        self.length = project_length
-        self.score = project_score
-        self.deadline = project_deadline
-        self.rolls = roll_names
-        self.roll_levels = roll_levels
-
-
-
 def parse():
     num_contributors, num_projects = input()
     contributors = []

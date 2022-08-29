@@ -3,32 +3,17 @@ from typing import Dict
 
 class Contributor:
     def __init__(self, name: str, skills: Dict):
-        self._name = name
-        self._skills = skills
+        self.name = name
+        self.skills = skills
 
     def improve_skill(self, skill_name: str):
-        self._skills[skill_name] += 1
+        self.skills[skill_name] += 1
 
 
 class Project:
-    def __init__(self, reward: int, deadline: int, length: int, required_skills: Dict):
-        self._reward = reward
-        self._deadline = deadline
-        self._length = length
-        self._required_skills = required_skills
-
-    @property
-    def reward(self):
-        return self._reward
-
-    @property
-    def deadline(self):
-        return self._deadline
-
-    @property
-    def length(self):
-        return self._length
-
-    @property
-    def required_skills(self):
-        return self._required_skills
+    def __init__(self, project_name: str, project_length: int, project_deadline: int, project_score: int, required_rolls: Dict):
+        self.name = project_name
+        self.length = project_length
+        self.score = project_score
+        self.deadline = project_deadline
+        self.required_rolls = required_rolls
