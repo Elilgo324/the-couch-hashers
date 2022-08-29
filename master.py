@@ -9,7 +9,7 @@ class Environment:
         self.contributors = contributors
         self.projects = projects
         self.max_days = max(project.latest for project in self.projects)
-        self.genes = [Gene(contributors, projects)]
+        self.genes = [Gene(contributors, projects, self.max_days)]
         for gene in self.genes:
             gene.greedy_init()
 
