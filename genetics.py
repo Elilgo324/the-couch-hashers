@@ -1,6 +1,7 @@
 from typing import List, Dict
 
 import networkx as nx
+import numpy as np
 
 import sorting
 from environment import Contributor, Project
@@ -27,18 +28,23 @@ class Gene:
         for project in self.projects:
             for day in range(self.max_days):
                 available_contributors = [contributor for contributor in self.contributors
-                                          if contributors_availability_day[contributor.name] >= day]
+                                          if contributors_availability_day[contributor.name] <= day]
 
-                for require_roll in project.required_rolls:
-                    filtered_contributors = project.fit_contributors(available_contributors, require_roll)
-                    # update assignment
-                    for contributor in filtered_contributors:
-                        self.projects_per_contributors[contributor.name].append(project.name)
-                        self.contributors_per_projects[project.name].append(contributor)
+                graph = nx.Graph()
+                graph.add_nodes_from([contributor for contributor in available_contributors], bipartite=0)
+                graph.add_nodes_from([rr for rr in project.required_rolls], bipartite=1)
+                graph.add_edges_from([(contributor, rr) for rr in project.required_rolls for contributor in available_contributors
+                                      if rr in contributor.skillz and contributor.skillz[rr] >= project.required_rolls[
+                                          rr]])
+                matching = nx.matching.maximal_matching(graph)
+
+                if len(matching) == len(project.required_rolls):
+                    for (chosen_contributor, _) in matching:
+                        self.projects_per_contributors[chosen_contributor.name].append(project.name)
+                        self.contributors_per_projects[project.name].append(chosen_contributor)
                         self.start_day[project.name] = day
-                        contributors_availability_day[contributor.name] += project.length
-                        available_contributors.remove(contributor)
-                        break
+                        contributors_availability_day[chosen_contributor.name] += project.length
+                        available_contributors.remove(chosen_contributor)
 
                 if len(project.required_rolls) == len(self.contributors_per_projects[project.name]):
                     break
@@ -55,14 +61,16 @@ class Gene:
     def _is_date_legit(self):
         for contributor in self.projects_per_contributors:
             last_day = -1
-            for project in self.projects_per_contributors[contributor]:
-                if self.start_day[project] <= last_day:
+            for project_name in self.projects_per_contributors[contributor]:
+                if self.start_day[project_name] < last_day:
                     return False
-                last_day = self.start_day[project] + project.length
+                last_day = self.start_day[project_name] + self.projects_dict[project_name].length
         return True
 
     def fitness(self):
         score = 0
+        if not self._is_date_legit():
+            return 0
         for project_name in self.start_day:
             project = self.projects_dict[project_name]
             if self._is_assignment_legit(project, self.contributors_per_projects[project_name]):
