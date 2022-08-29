@@ -38,6 +38,11 @@ class Project:
         return max(0, self.score - max(0, day_start + self.length - self.deadline))
 
     def find_most_fit_contributor(self, contributors: List[Contributor], required_roll: str):
+        return max(contributors,
+                   key=lambda c: max(c.skillz[required_roll] - self.required_rolls[required_roll], -.5))
+
+
+    def fit_contributors(self, contributors: List[Contributor], required_roll: str):
         filtered_contributors = [contributor for contributor in contributors if
                                  contributor.skillz[required_roll] - self.required_rolls[required_roll] >= 0]
         filtered_contributors.sort(
