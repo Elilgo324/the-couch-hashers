@@ -6,3 +6,6 @@ from environment import Project, Contributor
 def sort_projects_by_purple_score(projects: List[Project]):
     projects.sort(key=lambda p: p.purple_score)
 
+def sort_projects_by_size(projects: List[Project]):
+    projects.sort(key=lambda p: p.length)
+
