@@ -29,7 +29,7 @@ class Gene:
                                           if contributors_availability_day[contributor.name] >= day]
 
                 for require_roll in project.required_rolls:
-                    project.find_most_fit_contributor(available_contributors, require_roll)
+                    project.fit_contributors(available_contributors, require_roll)
                     # update assignment
                     for contributor in available_contributors:
                         self.projects_per_contributors[contributor.name] = project.name
