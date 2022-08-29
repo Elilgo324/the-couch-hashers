@@ -28,23 +28,25 @@ class Gene:
                 available_contributors = [contributor for contributor in self.contributors
                                           if contributors_availability_day[contributor.name] >= day]
 
-                best_contributors = [project.find_most_fit_contributor(available_contributors, roll) for roll in project.required_rolls]
-
-                # update assignment
-                for contributor in best_contributors:
-                    self.projects_per_contributors[contributor.name] = project.name
-                    self.contributors_per_projects[project.name] = contributor
-                    self.start_day[project.name] = day
-                    contributors_availability_day[contributor.name] += project.length
-                    break
+                for require_roll in project.required_rolls:
+                    project.fit_contributors(available_contributors, require_roll)
+                    # update assignment
+                    for contributor in available_contributors:
+                        self.projects_per_contributors[contributor.name] = project.name
+                        self.contributors_per_projects[project.name] = contributor
+                        self.start_day[project.name] = day
+                        contributors_availability_day[contributor.name] += project.length
+                        available_contributors.remove(contributor)
+                        break
 
     def _is_assignment_legit(self, project: Project, contributors: List[Contributor]):
         graph = nx.Graph()
         graph.add_nodes_from([contributor for contributor in contributors], bipartite=0)
         graph.add_nodes_from([rr for rr in project.required_rolls], bipartite=1)
         graph.add_edges_from([(contributor, rr) for rr in project.required_rolls for contributor in contributors
-                              if rr in contributor.skillz and contributor.skillz[rr] > project.required_rolls[rr]])
-        return nx.matching.maximal_matching(graph) == len(project.required_rolls)
+                              if rr in contributor.skillz and contributor.skillz[rr] >= project.required_rolls[rr]])
+        matching = nx.matching.maximal_matching(graph)
+        return len(matching) == len(project.required_rolls)
 
     def _is_date_legit(self):
         for contributor in self.projects_per_contributors:
