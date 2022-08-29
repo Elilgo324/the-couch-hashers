@@ -32,5 +32,8 @@ def parse():
 
 
 if __name__ == '__main__':
-    contributors, projects = parse()
-    master = Master(contributors, projects)
+    cons, projs = parse()
+    master = Master(cons, projs)
+    print(master.best_result().display_gene())
+    # gene = Gene(contributors, projects)
+    # gene.greedy_init(projects, contributors)
