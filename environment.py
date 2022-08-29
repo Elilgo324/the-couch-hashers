@@ -2,12 +2,12 @@ from typing import Dict, List
 
 
 class Contributor:
-    def __init__(self, name: str, skills: Dict):
+    def __init__(self, name: str, skillz: Dict):
         self.name = name
-        self.skills = skills
+        self.skillz = skillz
 
     def improve_skill(self, skill_name: str):
-        self.skills[skill_name] += 1
+        self.skillz[skill_name] += 1
 
 
 class Project:

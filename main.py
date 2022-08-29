@@ -4,6 +4,8 @@
 # Press Double ⇧ to search everywhere for classes, files, tool windows, actions, and settings.
 from typing import List
 
+from environment import Contributor, Project
+
 
 def parse():
     num_contributors, num_projects = input()
