@@ -8,4 +8,8 @@ def sort_projects_by_purple_score(projects: List[Project]):
 
 
 def find_most_fit_contributor(contributors: List[Contributor], project: Project, required_roll: str):
-    contributors.sort(key=lambda c: max(c.skillz[required_roll] - project.required_rolls[required_roll], 0))
+    filtered_contributors = [contributor for contributor in contributors if
+                             contributor.skillz[required_roll] - project.required_rolls[required_roll] >= 0]
+    filtered_contributors.sort(key=lambda c: max(c.skillz[required_roll] - project.required_rolls[required_roll], -.5))
+    return filtered_contributors
+
