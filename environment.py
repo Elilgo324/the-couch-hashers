@@ -1,4 +1,4 @@
-from typing import Dict
+from typing import Dict, List
 
 
 class Contributor:
@@ -17,3 +17,6 @@ class Project:
         self.score = project_score
         self.deadline = project_deadline
         self.required_rolls = required_rolls
+
+    def get_greedy_contributors_assignment(self) -> List[Contributor]:
+        pass

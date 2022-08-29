@@ -11,5 +11,5 @@ class Gene:
     def __init__(self, max_days, num_contributors):
         self.gene_mat = [[None for _ in range(num_contributors)] for _ in range(max_days)]
 
-    def random_init(self, projects_contributors_skills: Dict) -> None:
+    def greedy_init(self, sorted_projects: Dict) -> None:
         self.gene_mat = [[]]
